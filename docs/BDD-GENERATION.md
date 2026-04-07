@@ -208,6 +208,175 @@ Scenario: Partial data persists on browser close
   And the user resumes from the last valid state
 ```
 
+### Field Visibility → Scenarios
+
+Each field visibility rule produces a scenario for the default state and the conditional state.
+
+**Source (07-conditional-logic.md):**
+```
+STATE-002: CollectVehicleDetails
+| Field | Default | Condition | Becomes |
+| Vehicle.businessType | hidden | Vehicle.usage == "business" | visible + required |
+```
+
+**Output:**
+```gherkin
+@COND-001 @STATE-002
+Scenario: Business type field hidden by default
+  Given the user is in CollectVehicleDetails
+  And Vehicle.usage is not "business"
+  Then the businessType field is not available
+
+@COND-001 @STATE-002
+Scenario: Business type field shown for business use
+  Given the user is in CollectVehicleDetails
+  And Vehicle.usage is "business"
+  Then the businessType field is available and required
+```
+
+### Rate Limits → Scenarios
+
+Each rate limit produces a scenario for normal use and exceeded use.
+
+**Source (08-constraints.md):**
+```
+RATE-001: Quote Request Limit
+Action: Submit quote request
+Limit: 10 per hour per user
+When exceeded: Block submission, show message
+```
+
+**Output:**
+```gherkin
+@RATE-001
+Scenario: Quote requests within rate limit succeed
+  Given a user has submitted fewer than 10 quote requests this hour
+  When they submit a quote request
+  Then the request is processed normally
+
+@RATE-001
+Scenario: Quote requests exceeding rate limit are blocked
+  Given a user has submitted 10 quote requests this hour
+  When they attempt to submit another quote request
+  Then the submission is blocked
+  And the rate limit message is displayed
+```
+
+### Presentation Rules → Scenarios
+
+Each presentation rule produces scenarios for sorting, filtering, and empty states.
+
+**Source (05-business-rules.md):**
+```
+PR-001: Quote Results List
+Default sort: annualPrice ascending
+Empty state: MSG-010
+```
+
+**Output:**
+```gherkin
+@PR-001
+Scenario: Quote results are sorted by price ascending by default
+  Given quote results have been returned
+  When the results are displayed
+  Then quotes are ordered by annual price from lowest to highest
+
+@PR-001
+Scenario: Quote results empty state
+  Given no quotes match the current criteria
+  When the results are displayed
+  Then the no-quotes message is shown
+```
+
+### Interaction Behaviour → Scenarios
+
+Loading patterns, error display, and navigation behaviour produce scenarios.
+
+**Source (16-interaction-behaviour.md):**
+```
+LOADING-001: Quote Calculation
+Trigger: User submits complete quote request
+Immediate feedback: Submit button disabled, spinner shown
+Timeout: 15s — show error message
+```
+
+**Output:**
+```gherkin
+@LOADING-001
+Scenario: Quote calculation shows loading feedback
+  Given the user has submitted a complete quote request
+  When the submission is processing
+  Then the submit button is disabled
+  And a loading indicator is shown
+
+@LOADING-001
+Scenario: Quote calculation timeout shows error
+  Given the user has submitted a complete quote request
+  When the calculation takes longer than 15 seconds
+  Then an error message is displayed
+```
+
+### Accessibility → Scenarios
+
+Focus management, keyboard navigation, and screen reader announcements produce scenarios.
+
+**Source (17-accessibility.md):**
+```
+Focus Management:
+| Event | Focus moves to |
+| Error on submit | Error summary |
+
+ANNOUNCE-001: Validation Error
+Trigger: Form submission fails validation
+Text: "{count} errors found."
+Priority: assertive
+```
+
+**Output:**
+```gherkin
+@ANNOUNCE-001
+Scenario: Focus moves to error summary on failed submission
+  Given the user is completing a form
+  When they submit with validation errors
+  Then focus moves to the error summary
+  And a screen reader announces the number of errors
+
+Scenario: All form fields are reachable via keyboard
+  Given the user is in CollectDriverDetails
+  When they navigate using only the Tab key
+  Then every required field can be reached and edited
+```
+
+### Data Lifecycle → Scenarios
+
+Consent, user rights, and retention produce scenarios.
+
+**Source (18-data-lifecycle.md):**
+```
+CONSENT-001: Data Processing
+Required: yes (blocking)
+Collection method: Checkbox before first submission
+
+RIGHT-002: Right to Deletion
+Cascading: Delete Driver → delete all their QuoteRequests
+```
+
+**Output:**
+```gherkin
+@CONSENT-001
+Scenario: User cannot proceed without data processing consent
+  Given the user has not checked the data processing consent box
+  When they attempt to submit their details
+  Then submission is blocked
+
+@RIGHT-002
+Scenario: User deletion cascades to related data
+  Given a user requests deletion of their data
+  When the deletion is processed
+  Then the user's Driver record is deleted
+  And all associated QuoteRequests are deleted
+```
+
 ---
 
 ## Coverage Rules
@@ -221,6 +390,13 @@ A complete BDD suite generated from BET should have:
 - [ ] At least 1 scenario per constraint
 - [ ] At least 1 scenario per external service failure mode
 - [ ] At least 1 scenario per edge case
+- [ ] At least 2 scenarios per field visibility rule (default + conditional)
+- [ ] At least 2 scenarios per rate limit (within limit + exceeded)
+- [ ] At least 1 scenario per presentation rule
+- [ ] At least 1 scenario per loading pattern
+- [ ] At least 1 scenario per accessibility announcement
+- [ ] At least 1 scenario per consent requirement
+- [ ] At least 1 scenario per user right (access, deletion, portability)
 
 ## Tagging Convention
 

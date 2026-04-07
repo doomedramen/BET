@@ -75,3 +75,47 @@ An individual quote returned from a provider.
 | Quote Request | HAS ONE | Driver | Each request is for one driver |
 | Quote Request | HAS ONE | Vehicle | Each request is for one vehicle |
 | Quote Request | HAS MANY | Quote | Each request returns multiple quotes from providers |
+
+---
+
+## Data Transformations
+
+### TRANS-001: Quote Request Assembly
+
+- **Source**: Driver (ENT-001), Vehicle (ENT-002), QuoteRequest cover fields (ENT-003)
+- **Target**: Insurance Provider API payload (EXT-002)
+- **Mapping**:
+  | Source field | Target field | Transform |
+  |---|---|---|
+  | Driver.firstName | applicant.first_name | renamed |
+  | Driver.lastName | applicant.last_name | renamed |
+  | Driver.dateOfBirth | applicant.dob | formatted to ISO 8601 (YYYY-MM-DD) |
+  | Driver.age | (omitted) | not sent — provider calculates from dob |
+  | Driver.occupation | applicant.occupation | direct |
+  | Driver.licenceType | applicant.licence_type | direct |
+  | Driver.yearsHeld | applicant.years_held | direct |
+  | Vehicle.registrationNumber | vehicle.reg | renamed |
+  | Vehicle.make | vehicle.make | direct |
+  | Vehicle.model | vehicle.model | direct |
+  | Vehicle.year | vehicle.year | direct |
+  | Vehicle.engineSize | vehicle.engine_cc | renamed, omit if null |
+  | Vehicle.fuelType | vehicle.fuel | renamed, omit if null |
+  | Vehicle.estimatedValue | vehicle.value_pence | calculated: multiply by 100 (pounds to pence) |
+  | Vehicle.usage | vehicle.usage | direct |
+  | QuoteRequest.coverType | cover.type | direct |
+  | QuoteRequest.startDate | cover.start_date | formatted to ISO 8601 |
+- **Notes**: Omit null optional fields rather than sending empty strings. Provider expects monetary values in pence.
+
+### TRANS-002: Vehicle Lookup Response
+
+- **Source**: Vehicle Lookup Service response (EXT-001)
+- **Target**: Vehicle entity (ENT-002)
+- **Mapping**:
+  | Source field | Target field | Transform |
+  |---|---|---|
+  | response.make | Vehicle.make | direct |
+  | response.model | Vehicle.model | direct |
+  | response.yearOfManufacture | Vehicle.year | renamed |
+  | response.engineCapacity | Vehicle.engineSize | renamed |
+  | response.fuelType | Vehicle.fuelType | direct |
+- **Notes**: If any field is missing from response, leave the corresponding Vehicle field empty for manual entry (see [EDGE-004](13-edge-cases.md#EDGE-004)).

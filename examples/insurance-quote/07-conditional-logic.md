@@ -38,3 +38,39 @@
 |---|---|---|
 | COND-001 (business use) | Provider filtering | Fewer quotes returned |
 | COND-004 (provisional licence) | Cover type restriction | Only third-party cover available |
+
+---
+
+## Field Visibility & Editability
+
+### STATE-001: CollectDriverDetails
+
+| Field | Default | Condition | Becomes |
+|---|---|---|---|
+| Driver.firstName | visible + editable | — | — |
+| Driver.lastName | visible + editable | — | — |
+| Driver.dateOfBirth | visible + editable | — | — |
+| Driver.occupation | visible + editable | — | — |
+| Driver.licenceType | visible + editable | — | — |
+| Driver.yearsHeld | visible + editable | — | — |
+
+### STATE-002: CollectVehicleDetails
+
+| Field | Default | Condition | Becomes |
+|---|---|---|---|
+| Vehicle.registrationNumber | visible + editable | — | — |
+| Vehicle.make | visible + editable | [COND-003](#COND-003) (lookup found) | visible + read-only |
+| Vehicle.model | visible + editable | [COND-003](#COND-003) (lookup found) | visible + read-only |
+| Vehicle.year | visible + editable | [COND-003](#COND-003) (lookup found) | visible + read-only |
+| Vehicle.engineSize | visible + editable | [COND-003](#COND-003) (lookup found) | visible + read-only |
+| Vehicle.fuelType | visible + editable | [COND-003](#COND-003) (lookup found) | visible + read-only |
+| Vehicle.estimatedValue | visible + editable | — | — |
+| Vehicle.usage | visible + editable | — | — |
+| Vehicle.businessType | hidden | [COND-001](#COND-001) (usage == "business") | visible + required |
+
+### STATE-003: CollectCoverDetails
+
+| Field | Default | Condition | Becomes |
+|---|---|---|---|
+| QuoteRequest.coverType | visible + editable (all options) | [COND-004](#COND-004) (provisional licence) | visible + editable (third-party only) |
+| QuoteRequest.startDate | visible + editable | — | — |

@@ -30,3 +30,22 @@
 ---
 
 _Add more constraints as needed._
+
+---
+
+## Rate Limits & Abuse Prevention
+
+_Rules that limit how frequently actions can be performed. These protect the system and its external dependencies from abuse._
+
+### RATE-001: _[Rate limit name]_
+
+- **Action**: _[What is being limited — e.g., quote requests, vehicle lookups, login attempts]_
+- **Limit**: _[Number of allowed actions per time window — e.g., 10 per minute, 50 per hour]_
+- **Scope**: _[per user / per session / per IP / global]_
+- **When exceeded**: _[What happens — block, queue, degrade, show message]_
+- **Recovery**: _[When can the user try again — after time window resets, after CAPTCHA, etc.]_
+- **Message**: _[MSG-XXX](11-messages.md#MSG-XXX)_
+
+---
+
+_Add more rate limits as needed. Consider limits for: form submissions, API calls to external services, authentication attempts, data exports._

@@ -22,6 +22,31 @@
   - Service down: _[What happens]_
   - Bad data: _[What happens]_
 - **Fallback**: _[What the system does when this service is unavailable]_
+- **API Contract**:
+  - **Method**: _[GET / POST / PUT / DELETE / GraphQL query]_
+  - **Endpoint**: _[URL pattern or service identifier]_
+  - **Authentication**: _[API key / OAuth / mTLS / none]_
+  - **Request schema**:
+    ```
+    {
+      "_field_": "_type — description_",
+      "_field_": "_type — description_"
+    }
+    ```
+  - **Response schema**:
+    ```
+    {
+      "_field_": "_type — description_",
+      "_field_": "_type — description_"
+    }
+    ```
+  - **Error codes**:
+    | Code | Meaning | Maps to |
+    |---|---|---|
+    | _[e.g., 404]_ | _[Not found]_ | _[COND-XXX / fallback behaviour]_ |
+    | _[e.g., 429]_ | _[Rate limited]_ | _[Retry with backoff]_ |
+  - **Rate limits**: _[Provider-imposed limits, if any]_
+  - **Data transformation**: _[TRANS-XXX](02-data-model.md#TRANS-XXX) — how request/response maps to entities_
 
 ---
 
@@ -33,6 +58,13 @@
 - **Failure modes**:
   - _[Mode]_: _[What happens]_
 - **Fallback**: _[Fallback behaviour]_
+- **API Contract**:
+  - **Method**: _[method]_
+  - **Endpoint**: _[endpoint]_
+  - **Authentication**: _[auth method]_
+  - **Request schema**: _[schema]_
+  - **Response schema**: _[schema]_
+  - **Error codes**: _[codes and mappings]_
 
 ---
 

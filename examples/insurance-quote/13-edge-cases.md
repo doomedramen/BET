@@ -71,3 +71,24 @@
 - **Scenario**: User completes vehicle details, then goes back to change driver date of birth
 - **Expected behaviour**: Driver details are updated. Vehicle details are preserved. But quote must be recalculated — any cached quotes are invalidated.
 - **References**: [STATE-001](06-flow-state.md#STATE-001), [STATE-004](06-flow-state.md#STATE-004)
+
+### EDGE-011: Two Tabs Open Simultaneously
+
+- **Category**: multi-session
+- **Scenario**: User opens the quote flow in two browser tabs, enters different data in each, and submits both
+- **Expected behaviour**: Each tab operates on the same server-side session. The last submission overwrites the first. The user sees results from whichever submission was processed last. No data corruption occurs.
+- **References**: All states in [06-flow-state.md](06-flow-state.md)
+
+### EDGE-012: Started on Mobile, Continue on Desktop
+
+- **Category**: multi-session
+- **Scenario**: User starts the quote flow on a mobile browser, enters driver details, then opens the same URL on their desktop
+- **Expected behaviour**: Desktop session loads the same saved data (linked by session cookie or account). User resumes from last valid state. Mobile session remains valid but stale.
+- **References**: [CAP-003](01-capabilities.md#CAP-003) (Resume Partial Quote)
+
+### EDGE-013: Rate Limit Hit During Normal Use
+
+- **Category**: boundary
+- **Scenario**: A user legitimately adjusts their details and resubmits multiple times, hitting the 10-per-hour quote limit
+- **Expected behaviour**: Clear message explaining the limit and when they can try again. Data is preserved so they don't need to re-enter anything.
+- **References**: [RATE-001](08-constraints.md#RATE-001), [MSG-012](11-messages.md#MSG-012)

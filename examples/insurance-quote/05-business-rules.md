@@ -57,3 +57,17 @@
 | Conflict | Rule A | Rule B | Resolution |
 |---|---|---|---|
 | Age + occupation | BR-001 | BR-002 | BR-001 wins — if underage, occupation doesn't matter (blocked entirely) |
+
+---
+
+## Presentation Rules
+
+### PR-001: Quote Results List
+
+- **Context**: Quotes displayed in [STATE-005](06-flow-state.md#STATE-005) (QuoteResults)
+- **Default sort**: annualPrice ascending (cheapest first)
+- **Available sort options**: annualPrice (asc/desc), monthlyPrice (asc/desc), provider name (A-Z), excess (asc/desc)
+- **Filtering**: coverLevel (comprehensive, third-party, third-party fire & theft), excess range (min/max slider)
+- **Pagination**: All results shown at once (max 20 providers — no pagination needed)
+- **Empty state**: [MSG-010](11-messages.md#MSG-010) — "No quotes are available for your details."
+- **References**: [ENT-004](02-data-model.md#ENT-004), [STATE-005](06-flow-state.md#STATE-005)

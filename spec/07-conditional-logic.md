@@ -39,3 +39,24 @@ _If conditions cascade (A triggers B triggers C), document the chain here._
 | Starting condition | Triggers | Which triggers | End result |
 |---|---|---|---|
 | _[COND-XXX]_ | _[COND-XXX]_ | _[COND-XXX]_ | _[Final outcome]_ |
+
+---
+
+## Field Visibility & Editability
+
+_For each state, document which fields are visible, hidden, read-only, or conditionally required. This captures the behavioural rules that determine what the user can see and interact with._
+
+### _[STATE-XXX]_: _[State name]_
+
+| Field | Default | Condition | Becomes |
+|---|---|---|---|
+| _Entity.field_ | _visible + editable_ | _[none — always this way]_ | — |
+| _Entity.field_ | _hidden_ | _[COND-XXX is true]_ | _visible + required_ |
+| _Entity.field_ | _visible + editable_ | _[COND-XXX is true]_ | _visible + read-only_ |
+| _Entity.field_ | _visible + editable_ | _[Entity.otherField == "value"]_ | _hidden_ |
+
+**Editability values**: `editable`, `read-only`, `disabled`, `hidden`
+
+---
+
+_Repeat for each state that has user-facing fields. Every field from the data model should appear in at least one state's visibility table._

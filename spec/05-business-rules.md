@@ -45,3 +45,23 @@ _When multiple rules apply to the same situation, they are evaluated in priority
 | Conflict | Rule A | Rule B | Resolution |
 |---|---|---|---|
 | _[Description]_ | _[BR-XXX]_ | _[BR-XXX]_ | _[Which wins and why]_ |
+
+---
+
+## Presentation Rules
+
+_How lists, collections, and results are displayed — default ordering, available sorting, filtering, and pagination. These are behavioural decisions, not UI decisions._
+
+### PR-001: _[List/collection name]_
+
+- **Context**: _[Where this list appears — e.g., quote results, search results, user list]_
+- **Default sort**: _[Field and direction — e.g., annualPrice ascending]_
+- **Available sort options**: _[Which fields can the user sort by, if any]_
+- **Filtering**: _[What can be filtered, and by which criteria]_
+- **Pagination**: _[Page size, infinite scroll, load more, or all-at-once. Max items.]_
+- **Empty state**: _[What happens when the list has zero items — link to message]_
+- **References**: _[Link to relevant entities and states]_
+
+---
+
+_Add more presentation rules as needed. Every state that presents a list or collection needs one._

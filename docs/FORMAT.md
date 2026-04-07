@@ -18,19 +18,34 @@ Rules for writing consistent, unambiguous BET specs.
 | Capabilities | `CAP-` | `CAP-001` |
 | Data Model (Entity) | `ENT-` | `ENT-001` |
 | Data Model (Field) | `entity.fieldName` | `Driver.dateOfBirth` |
+| Data Model (Transformation) | `TRANS-` | `TRANS-001` |
 | Permissions | `PERM-` | `PERM-001` |
 | Validation Rules | `VR-` | `VR-001` |
 | Business Rules | `BR-` | `BR-001` |
+| Presentation Rules | `PR-` | `PR-001` |
 | Flow States | `STATE-` | `STATE-001` |
 | Conditional Logic | `COND-` | `COND-001` |
 | Constraints | `CON-` | `CON-001` |
+| Rate Limits | `RATE-` | `RATE-001` |
 | External Interactions | `EXT-` | `EXT-001` |
 | Events | `EVT-` | `EVT-001` |
 | Messages | `MSG-` | `MSG-001` |
+| Help Text | `HELP-` | `HELP-001` |
+| Legal Text | `LEGAL-` | `LEGAL-001` |
+| Content | `CONTENT-` | `CONTENT-001` |
 | Errors | `ERR-` | `ERR-001` |
 | Edge Cases | `EDGE-` | `EDGE-001` |
+| Interaction Behaviour (Loading) | `LOADING-` | `LOADING-001` |
+| Accessibility (Announcement) | `ANNOUNCE-` | `ANNOUNCE-001` |
+| Consent | `CONSENT-` | `CONSENT-001` |
+| User Rights | `RIGHT-` | `RIGHT-001` |
 | Dependencies | `DEP-` | `DEP-001` |
 | Non-Functional | `NFR-` | `NFR-001` |
+| UI Components | `COMP-` | `COMP-001` |
+| Alerts | `ALERT-` | `ALERT-001` |
+| Dashboards | `DASH-` | `DASH-001` |
+| Onboarding Steps | `ONBOARD-` | `ONBOARD-001` |
+| Animations | `ANIM-` | `ANIM-001` |
 
 ## Cross-References
 
@@ -39,6 +54,10 @@ Reference items in other sections using their ID and file:
 ```
 Depends on: [VR-003](04-validation-rules.md)
 References: [Driver.dateOfBirth](02-data-model.md#Driver)
+Transformation: [TRANS-001](02-data-model.md#TRANS-001)
+Rate limit: [RATE-001](08-constraints.md#RATE-001)
+Help text: [HELP-001](11-messages.md#HELP-001)
+Legal: [LEGAL-001](11-messages.md#LEGAL-001)
 ```
 
 ## Data Model Format
@@ -174,4 +193,150 @@ Use `{parameterName}` for dynamic content.
 - **References**: [STATE-001](06-flow-state.md#STATE-001) resumability
 ```
 
-**Category** values: `data`, `timing`, `concurrency`, `partial state`, `permissions`, `boundary`
+**Category** values: `data`, `timing`, `concurrency`, `multi-session`, `partial state`, `permissions`, `boundary`
+
+## Data Transformations Format
+
+```markdown
+### TRANS-001: Quote Request Assembly
+
+- **Source**: Driver, Vehicle, QuoteRequest (cover details)
+- **Target**: Insurance Provider API payload
+- **Mapping**:
+  | Source field | Target field | Transform |
+  |---|---|---|
+  | Driver.firstName | applicant.first_name | direct |
+  | Driver.dateOfBirth | applicant.dob | formatted to ISO 8601 |
+  | Driver.age | (omitted) | not sent — provider calculates from dob |
+- **Notes**: Omit null optional fields rather than sending empty values
+```
+
+**Transform** values: `direct`, `renamed`, `formatted`, `combined`, `calculated`, `omitted`
+
+## Presentation Rules Format
+
+```markdown
+### PR-001: Quote Results List
+
+- **Context**: Quote results displayed after calculation
+- **Default sort**: annualPrice ascending
+- **Available sort options**: annualPrice, monthlyPrice, provider name, excess
+- **Filtering**: coverLevel, excess range
+- **Pagination**: All results shown (max 20 providers)
+- **Empty state**: [MSG-010](11-messages.md#MSG-010)
+```
+
+## Field Visibility Format
+
+```markdown
+### STATE-001: CollectDriverDetails
+
+| Field | Default | Condition | Becomes |
+|---|---|---|---|
+| Driver.firstName | visible + editable | — | — |
+| Driver.businessType | hidden | Vehicle.usage == "business" | visible + required |
+```
+
+**Editability** values: `editable`, `read-only`, `disabled`, `hidden`
+
+## Rate Limits Format
+
+```markdown
+### RATE-001: Quote Request Limit
+
+- **Action**: Submit quote request
+- **Limit**: 10 per hour
+- **Scope**: per user
+- **When exceeded**: Show error message, block submission
+- **Recovery**: After time window resets
+- **Message**: [MSG-XXX](11-messages.md)
+```
+
+## API Contract Format
+
+API contracts are added to external interactions (09). Each service includes:
+
+```markdown
+- **API Contract**:
+  - **Method**: POST
+  - **Endpoint**: /api/v1/vehicle-lookup
+  - **Authentication**: API key in header
+  - **Request schema**: { "registration": "string" }
+  - **Response schema**: { "make": "string", "model": "string", ... }
+  - **Error codes**:
+    | Code | Meaning | Maps to |
+    |---|---|---|
+    | 404 | Vehicle not found | COND-001 |
+  - **Rate limits**: 100 requests per minute per API key
+  - **Data transformation**: [TRANS-001](02-data-model.md#TRANS-001)
+```
+
+## Content Format
+
+Section 11 now covers all user-facing text, not just reactive messages:
+
+```markdown
+### HELP-001: Cover Type Explainer
+
+- **Context**: Alongside QuoteRequest.coverType field
+- **Text**: "Comprehensive cover protects against damage to your vehicle and others."
+- **Display**: expandable
+
+### LEGAL-001: Data Processing Consent
+
+- **Location**: STATE-001 (CollectDriverDetails)
+- **Text**: "By proceeding, you agree to our processing of your personal data..."
+- **Interaction**: must check box
+- **Required by**: GDPR
+
+### CONTENT-001: Quote Results Introduction
+
+- **Context**: Top of STATE-005 (QuoteResults)
+- **Text**: "Here are your quotes, sorted by price."
+- **Purpose**: Orients the user to the results page
+```
+
+## Interaction Behaviour Format
+
+```markdown
+### LOADING-001: Quote Calculation
+
+- **Trigger**: User submits complete quote request
+- **Immediate feedback**: Submit button disabled, spinner shown
+- **Threshold**: After 3s, show "Getting your quotes..."
+- **Timeout**: 15s — show error message
+- **Cancellable**: no
+- **Success feedback**: Redirect to quote results
+```
+
+## Accessibility Format
+
+```markdown
+### ANNOUNCE-001: Validation Error
+
+- **Trigger**: Form submission fails validation
+- **Text**: "{count} errors found. Please correct and try again."
+- **Priority**: assertive
+- **Mechanism**: role="alert"
+```
+
+## Data Lifecycle Format
+
+```markdown
+### CONSENT-001: Data Processing
+
+- **Data covered**: All Driver and Vehicle fields
+- **Purpose**: Quote generation
+- **Collection method**: Checkbox before first submission
+- **Required**: yes (blocking)
+- **Revocable**: yes
+- **Text**: [LEGAL-001](11-messages.md#LEGAL-001)
+- **Stored as**: timestamp, consent version, IP address
+
+### RIGHT-001: Right to Access
+
+- **What**: User can request all personal data
+- **Response format**: JSON download
+- **Response time**: Immediate (self-service)
+- **Authentication**: Logged-in user session
+```
