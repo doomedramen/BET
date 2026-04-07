@@ -1,0 +1,32 @@
+/// Returns the ID prefix for a given section number (e.g., 1 → "CAP", 5 → "BR").
+pub fn id_prefix_for_section(number: u8) -> &'static str {
+    match number {
+        1 => "CAP",
+        2 => "ENT",
+        3 => "PERM",
+        4 => "VR",
+        5 => "BR",
+        6 => "STATE",
+        7 => "COND",
+        8 => "CON",
+        9 => "EXT",
+        10 => "EVT",
+        11 => "MSG",
+        12 => "ERR",
+        13 => "EDGE",
+        14 => "DEP",
+        15 => "NFR",
+        16 => "LOADING",
+        17 => "ANNOUNCE",
+        18 => "CONSENT",
+        19 => "COMP",
+        20 => "ARCH",
+        21 => "SEO",
+        22 => "LOC",
+        23 => "ANIM",
+        24 => "DASH",
+        25 => "ONBOARD",
+        26 => "CHANNEL",
+        _ => "TODO",
+    }
+}
