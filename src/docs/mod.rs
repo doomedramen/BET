@@ -6,6 +6,7 @@ const DOC_FILES: &[&str] = &[
     "GUIDE.md",
     "COMPLETENESS-CHECKLIST.md",
     "BDD-GENERATION.md",
+    "TESTING.md",
 ];
 
 /// Default GitHub raw content base URL.

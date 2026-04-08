@@ -46,6 +46,7 @@ Rules for writing consistent, unambiguous BET specs.
 | Dashboards | `DASH-` | `DASH-001` |
 | Onboarding Steps | `ONBOARD-` | `ONBOARD-001` |
 | Animations | `ANIM-` | `ANIM-001` |
+| Testing Decisions | `TEST-` | `TEST-001` |
 
 ## Cross-References
 
@@ -340,3 +341,16 @@ Section 11 now covers all user-facing text, not just reactive messages:
 - **Response time**: Immediate (self-service)
 - **Authentication**: Logged-in user session
 ```
+
+## Testing Strategy Format
+
+```markdown
+### TEST-001: [Title]
+
+- **Layer**: [unit | integration | contract | e2e | bdd]
+- **Covers**: [spec IDs, e.g. BR-001, VR-003, EXT-001]
+- **Decision / Gap**: [What was decided, or why coverage is deferred]
+- **Status**: [ ] Implemented  [ ] Deferred  [ ] Out of scope
+```
+
+**Layer** values: `unit`, `integration`, `contract`, `e2e`, `bdd`

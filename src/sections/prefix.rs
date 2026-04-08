@@ -27,6 +27,7 @@ pub fn id_prefix_for_section(number: u8) -> &'static str {
         24 => "DASH",
         25 => "ONBOARD",
         26 => "CHANNEL",
+        27 => "TEST",
         _ => "TODO",
     }
 }

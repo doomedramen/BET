@@ -40,6 +40,7 @@ Optional sections extend into UI design, technical architecture, SEO, localizati
 4. Use `docs/GUIDE.md` for tips on each section
 5. Validate with `docs/COMPLETENESS-CHECKLIST.md`
 6. Generate BDD scenarios using `docs/BDD-GENERATION.md`
+7. Map spec items to test layers using `docs/TESTING.md`
 
 ## Structure
 
@@ -50,7 +51,8 @@ BET/
 │   ├── FORMAT.md                      — Writing conventions and syntax rules
 │   ├── GUIDE.md                       — Section-by-section walkthrough
 │   ├── COMPLETENESS-CHECKLIST.md      — How to validate your spec is done
-│   └── BDD-GENERATION.md             — Turning specs into Given/When/Then scenarios
+│   ├── BDD-GENERATION.md             — Turning specs into Given/When/Then scenarios
+│   └── TESTING.md                    — Mapping spec sections to unit/integration/e2e/contract tests
 │
 ├── spec/                              — Copy this folder to start a new spec
 │   │
@@ -84,7 +86,8 @@ BET/
 │   ├── 23-animation.md              — [OPTIONAL] Transitions, micro-interactions, motion
 │   ├── 24-monitoring.md              — [OPTIONAL] Dashboards, alerts, logging, health checks
 │   ├── 25-onboarding.md              — [OPTIONAL] First-run, empty states, feature discovery
-│   └── 26-multi-channel.md           — [OPTIONAL] Cross-device, cross-platform behaviour
+│   ├── 26-multi-channel.md           — [OPTIONAL] Cross-device, cross-platform behaviour
+│   └── 27-testing-strategy.md        — [OPTIONAL] Test layers, frameworks, coverage plan, known gaps
 │
 └── examples/
     └── insurance-quote/               — Fully worked example
@@ -113,6 +116,7 @@ Sections have dependencies. Follow this order:
 17. **Accessibility** — keyboard, focus, screen readers
 18. **Data Lifecycle** — consent, retention, deletion, compliance
 19–26. **Optional Extensions** — UI, architecture, SEO, localization, animation, monitoring, onboarding, multi-channel (fill in any order, as needed)
+27. **Testing Strategy** — decide test layers, assign spec sections, document gaps
 
 ## The Payoff
 

@@ -28,7 +28,8 @@ pub fn print_generation_complete(generated: usize, spec_path: &std::path::Path) 
     println!("  2. Follow the recommended fill order in spec/README.md");
     println!("  3. Validate with docs/COMPLETENESS-CHECKLIST.md");
     println!("  4. Generate BDD scenarios with docs/BDD-GENERATION.md");
-    println!("  5. Push your spec to https://github.com/doomedramen/BET\n");
+    println!("  5. Map spec sections to test layers with docs/TESTING.md");
+    println!("  6. Commit your spec/ directory to your project repository\n");
 }
 
 pub fn print_add_complete(added: usize, spec_path: &std::path::Path) {

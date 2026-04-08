@@ -245,6 +245,17 @@ Use this checklist to validate that your spec is done. A spec is complete when a
 - [ ] Cross-channel state sync is defined
 - [ ] Channel-specific entry points are documented
 
+### 27 — Testing Strategy (if applicable)
+
+- [ ] Test framework / tooling is decided for each layer (unit, integration, contract, e2e)
+- [ ] Every required spec section is assigned to at least one test layer
+- [ ] Every `VR-XXX` validation rule has a planned unit test
+- [ ] Every `BR-XXX` business rule has a planned unit test (both branches)
+- [ ] Every `EXT-XXX` external interaction has a planned contract or integration test
+- [ ] Every `EDGE-XXX` edge case has a planned E2E test
+- [ ] Known gaps are documented with `TEST-XXX` entries and a reason
+- [ ] How to run tests locally and in CI is documented
+
 ---
 
 ## Cross-Section Consistency

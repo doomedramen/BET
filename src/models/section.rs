@@ -220,5 +220,13 @@ pub fn all_sections() -> Vec<BetSection> {
             description: "Cross-device, cross-platform behaviour".to_string(),
             included: false,
         },
+        BetSection {
+            number: 27,
+            name: "Testing Strategy".to_string(),
+            filename: "27-testing-strategy.md".to_string(),
+            required: false,
+            description: "Test layers, frameworks, coverage plan, known gaps".to_string(),
+            included: false,
+        },
     ]
 }

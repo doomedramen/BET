@@ -602,3 +602,25 @@ Each section below covers:
 **Red flags**:
 - No supported channels listed
 - No cross-channel continuity defined for a multi-channel system
+
+---
+
+## 27 — Testing Strategy [OPTIONAL]
+
+**What to capture**: The testing approach for the project — which test layers cover which spec sections, which frameworks are in use, and any known gaps or deferred coverage. This is the bridge between the spec and the actual test suite.
+
+**Rewrite mode**: Audit the existing tests. For each spec section, ask: "Where is this tested?" Map existing tests to spec IDs. Document gaps — spec items with no tests are regressions waiting to happen.
+
+**Greenfield mode**: Decide the test pyramid before writing code. For each required spec section, decide which test layer covers it. Record the decision — "business rules are unit-tested, flow states are covered by E2E, external interactions have contract tests."
+
+**Common mistakes**:
+- Only documenting E2E tests (forgetting unit and integration layers)
+- Not linking tests to spec IDs (makes it impossible to know what's covered)
+- Treating BDD as the only test type — BDD covers behaviour, not logic
+- Deferring all coverage to "after the build" — decisions made now are cheaper
+
+**Red flags**:
+- No framework or tooling decided
+- No unit tests planned for business rules or validation
+- External interactions with no contract or integration tests
+- E2E tests that duplicate unit test coverage (expensive and brittle)
